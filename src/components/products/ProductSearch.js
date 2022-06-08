@@ -20,7 +20,7 @@ export const ProductSearch = () => {
     })
       
   }, []);
-  
+
   return (
     <>
       <h2>Product Search</h2>

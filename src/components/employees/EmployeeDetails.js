@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 
 export const EmployeeDetails = () => {
     const {employeeId} = useParams()
     const [employee, updateEmployee] = useState({})
 
+    const navigate = useNavigate()
     useEffect(
         () => {
             fetch(`http://localhost:8088/employees?_expand=user&_expand=location&userId=${employeeId}`)
@@ -22,5 +23,19 @@ export const EmployeeDetails = () => {
         <div>Location: {employee?.location?.address}</div>
         <div>Pay Rate: {employee.payRate}</div>
         <div>Start Date: {employee.startDate}</div>
+        <button onClick={
+            () => {
+                fetch(`http://localhost:8088/employees/${employee.id}`, {
+                    method: "DELETE"
+                })
+
+                fetch(`http://localhost:8088/users/${employee.userId}`, {
+                    method: "DELETE"
+                })
+                .then(() => {
+                    navigate("/employees")
+                })
+            }
+        }>Remove Employee</button>
     </section>
 }

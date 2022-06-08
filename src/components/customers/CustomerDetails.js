@@ -20,7 +20,28 @@ export const CustomerDetails = () => {
         <section>
             <header>{customer?.user?.name}</header>
             <div>Email: {customer?.user?.email}</div>
-            <div>Loyalty Number: {customer.loyaltyNumber}</div>
+            <div>Loyalty Number:  <input type="number" value={customer.loyaltyNumber} onChange={
+                (evt) => {
+                    const copy = {...customer}
+                    copy.loyaltyNumber = parseInt(evt.target.value)
+                    updateCustomer(copy)
+                }
+            }/><button
+                onClick={
+                    () => {
+                        fetch(`http://localhost:8088/customers/${customer.id}`, {
+                            method: "PUT",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify(customer)
+                        })
+                        .then(response => response.json)
+
+                        
+                    }
+                }
+                >Update</button></div>
         </section>
     )
 }
